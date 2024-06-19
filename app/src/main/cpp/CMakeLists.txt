@@ -10,7 +10,11 @@ cmake_minimum_required(VERSION 3.22.1)
 # with ${CMAKE_PROJECT_NAME} (both CMake variables are in-sync within the top level
 # build script scope).
 project("dynamic")
+# 当前工作空间和CMakeList.txt文件位置一致
+set(WORKSPACE_PATH &{CMAKE_SOURCE_DIR})
 
+#设置可执行文件的输出为位置
+set(EXECUTABLE_OUTPUT_PATH ${WORKSPACE_PATH})
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -24,25 +28,28 @@ project("dynamic")
 # System.loadLibrary() and pass the name of the library defined here;
 # for GameActivity/NativeActivity derived applications, the same library name must be
 # used in the AndroidManifest.xml file.
-add_library(nativeLib SHARED
-        # List C/C++ source files with relative paths to this CMakeLists.txt.
-        native-lib.cpp)
 
-add_library(native1 SHARED
-        nativeso1.cpp)
+
+add_library(A SHARED
+        # List C/C++ source files with relative paths to this CMakeLists.txt.
+        native-lib-A.cpp)
+
+add_library(B SHARED
+        native-lib-B.cpp)
 
 # Specifies libraries CMake should link to your target library. You
 # can link libraries from various origins, such as libraries defined in this
 # build script, prebuilt third-party libraries, or Android system libraries.
 
 
-target_link_libraries(native1
+target_link_libraries(B
         # List libraries link to the target library
         android
         log)
-
-target_link_libraries(nativeLib
+# nativeLib 依赖 native1
+target_link_libraries(A
         # List libraries link to the target library
+        B
         android
         log
-        native1)
+        )

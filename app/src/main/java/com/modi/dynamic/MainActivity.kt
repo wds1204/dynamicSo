@@ -20,21 +20,20 @@ class MainActivity : AppCompatActivity() {
                 permission.READ_EXTERNAL_STORAGE
             ), 100
         )
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Example of a call to a native method
         binding.button.setOnClickListener {
-            DynamicSoHelp.loadSoLibrary("nativeLib")
+            DynamicSoHelp.loadSoLibrary("A")
         }
 
         binding.button1.setOnClickListener {
-            binding.sampleText.text = stringFromJNI()
+            binding.sampleText.text = stringAFromJNI()
         }
 
         binding.button2.setOnClickListener {
-            clickNative1()
+            binding.sampleText.text =stringBFromJNI()
         }
 
         println(AbiUtils.getSupportABIS()?.toList())
@@ -44,15 +43,15 @@ class MainActivity : AppCompatActivity() {
      * A native method that is implemented by the 'dynamic' native library,
      * which is packaged with this application.
      */
-    external fun stringFromJNI(): String
+    external fun stringAFromJNI(): String
 
-    external fun clickNative1()
+    external fun stringBFromJNI():String
 
 
     companion object {
         // Used to load the 'dynamic' library on application startup.
-//        init {
-//            System.loadLibrary("dynamic")
-//        }
+        init {
+//            System.loadLibrary("A")
+        }
     }
 }
